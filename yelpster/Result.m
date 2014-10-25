@@ -23,6 +23,7 @@
         result.ratingsURL = searchResult[@"rating_img_url"];
         result.reviewCount = [NSString stringWithFormat:@"%@",searchResult[@"review_count"]];
         result.address = [searchResult valueForKeyPath:@"location.address"][0];
+        result.categories = [[NSMutableArray alloc]init];
         for (NSString *category in searchResult[@"categories"][0]) {
             [result.categories addObject:category];
         }

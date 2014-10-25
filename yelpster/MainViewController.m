@@ -56,6 +56,7 @@ NSString * const kYelpTokenSecret=@"j_VPwzZoIf-HIGQwaK0fbv5jCNU";
     [self.client searchWithTerm:@"Thai" success:^(AFHTTPRequestOperation *operation, id response) {
         self.searchResults = [Result unpackSearchResponse:response[@"businesses"]];
         [self.resultsTableView reloadData];
+    //    NSLog(@"response: %@", response);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"error: %@", [error description]);
     }];
@@ -84,7 +85,7 @@ NSString * const kYelpTokenSecret=@"j_VPwzZoIf-HIGQwaK0fbv5jCNU";
     [cell.ratingsImageView setImageWithURL:[NSURL URLWithString:result.ratingsURL]];
     cell.reviewCountLabel.text = [NSString stringWithFormat:@"%@ reviews", result.reviewCount];
     cell.addressLabel.text = result.address;
-    cell.categoriesLabel.text = [result.categories componentsJoinedByString:@","];
+    cell.categoriesLabel.text = [result.categories componentsJoinedByString:@", "];
     return cell;
 }
 

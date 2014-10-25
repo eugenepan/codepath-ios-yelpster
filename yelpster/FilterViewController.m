@@ -34,6 +34,7 @@
     
     self.navigationItem.leftBarButtonItem = self.cancelButton;
     self.navigationItem.rightBarButtonItem = self.searchButton;
+    self.navigationItem.title = @"Filters";
 }
 
 - (void)didReceiveMemoryWarning {
@@ -45,8 +46,13 @@
 }
 
 - (void) onSearchButton {
-    [self.searchViewController loadSearch:@"Fast Food"];
+    [self.delegate loadSearch:[self fetchCurrentSearchTerm]];
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (NSString *) fetchCurrentSearchTerm {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    return [defaults objectForKey:@"searchTerm"];
 }
 
 @end

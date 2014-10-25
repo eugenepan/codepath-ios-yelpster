@@ -15,10 +15,7 @@
     
     float milesPerMeter = 0.000621371;
     
-    NSLog(@"Returning these number of results: %ld", searchResults.count);
-    
     for (NSDictionary *searchResult in searchResults) {
-        NSLog(@"unpacking");
         Result *result = [[Result alloc]init];
         result.imageURL = searchResult[@"image_url"];
         result.name = searchResult[@"name"];

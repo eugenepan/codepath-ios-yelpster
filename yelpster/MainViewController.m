@@ -19,10 +19,11 @@ NSString * const kYelpConsumerSecret=@"KDxfNaZ6C_OZuehpzLLRq0RA7Ec";
 NSString * const kYelpToken=@"bforA2MYtu8zx_jWG4B-sCFvF9JPaBR1";
 NSString * const kYelpTokenSecret=@"j_VPwzZoIf-HIGQwaK0fbv5jCNU";
 
-@interface MainViewController ()
+@interface MainViewController ()<FilterViewControllerDelegate>
 
 @property (nonatomic, strong) YelpClient *client;
 @property (nonatomic, strong) NSArray *searchResults;
+@property (nonatomic, weak) NSString *currSearchTerm;
 
 @property (retain, nonatomic) UIBarButtonItem *filterButton;
 @property (retain, nonatomic) UISearchBar *searchBar;
@@ -58,6 +59,7 @@ NSString * const kYelpTokenSecret=@"j_VPwzZoIf-HIGQwaK0fbv5jCNU";
                                               accessToken:kYelpToken
                                              accessSecret:kYelpTokenSecret];
     
+    [self saveCurrentSearchTerm:@"Burma"];
     [self loadSearch:@"Burma"];
 }
 
@@ -99,9 +101,8 @@ NSString * const kYelpTokenSecret=@"j_VPwzZoIf-HIGQwaK0fbv5jCNU";
 }
 
 - (void) searchBarSearchButtonClicked:(UISearchBar *)searchBar {
-    NSString *searchTerm = searchBar.text;
-    [self loadSearch:searchTerm];
-    NSLog(@"Searching for %@", searchBar.text);
+    [self saveCurrentSearchTerm:searchBar.text];
+    [self loadSearch:searchBar.text];
     [self.searchBar resignFirstResponder];
 }
 
@@ -111,24 +112,35 @@ NSString * const kYelpTokenSecret=@"j_VPwzZoIf-HIGQwaK0fbv5jCNU";
 
 - (void) loadSearch:(NSString *)searchTerm {
     [SVProgressHUD show];
-   [self.client searchWithTerm:searchTerm
-                       success:^(AFHTTPRequestOperation *operation, id response) {
-        NSLog(@"response: %@", response);
+    [self.client searchWithTerm:searchTerm
+                        success:^(AFHTTPRequestOperation *operation, id response) {
+     //   NSLog(@"response: %@", response);
         self.searchResults = [Result unpackSearchResponse:response[@"businesses"]];
         [self.resultsTableView reloadData];
                            [SVProgressHUD dismiss];
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"error: %@", [error description]);
-    }];
+     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+         NSLog(@"error: %@", [error description]);
+     }];
 }
 
 - (void) onFilterButton {
     FilterViewController *fvc = [[FilterViewController alloc]init];
-    fvc.searchViewController = self;
+    fvc.delegate = self;
     UINavigationController *nvc = [[UINavigationController alloc]
                                    initWithRootViewController:fvc];
     nvc.navigationBar.barStyle = UIBarStyleBlackTranslucent;
     [self presentViewController:nvc animated:YES completion:nil];
+}
+
+- (void) saveCurrentSearchTerm: (NSString *) searchTerm {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setObject:searchTerm forKey:@"searchTerm"];
+    [defaults synchronize];
+}
+
+- (NSString *) fetchCurrentSearchTerm {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    return [defaults objectForKey:@"searchTerm"];
 }
 
 @end

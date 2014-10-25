@@ -15,19 +15,22 @@
     
     float milesPerMeter = 0.000621371;
     
+    NSLog(@"Returning these number of results: %ld", searchResults.count);
+    
     for (NSDictionary *searchResult in searchResults) {
+        NSLog(@"unpacking");
         Result *result = [[Result alloc]init];
         result.imageURL = searchResult[@"image_url"];
         result.name = searchResult[@"name"];
         result.distance = [searchResult[@"distance"] integerValue] * milesPerMeter;
         result.ratingsURL = searchResult[@"rating_img_url"];
         result.reviewCount = [NSString stringWithFormat:@"%@",searchResult[@"review_count"]];
-        result.address = [searchResult valueForKeyPath:@"location.address"][0];
+        NSArray *address = [searchResult valueForKeyPath:@"location.address"];
+        result.address = address.count ? address[0] : @"";
         result.categories = [[NSMutableArray alloc]init];
         for (NSString *category in searchResult[@"categories"][0]) {
             [result.categories addObject:category];
         }
-        
         [results addObject:result];
     }
     

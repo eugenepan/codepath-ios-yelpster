@@ -11,6 +11,7 @@
 #import "YelpClient.h"
 #import "Result.h"
 #import "ResultCell.h"
+#import "SVProgressHUD.h"
 
 NSString * const kYelpConsumerKey=@"KLYpINtx0-aHzp8LjaAklA";
 NSString * const kYelpConsumerSecret=@"KDxfNaZ6C_OZuehpzLLRq0RA7Ec";
@@ -53,13 +54,7 @@ NSString * const kYelpTokenSecret=@"j_VPwzZoIf-HIGQwaK0fbv5jCNU";
                                               accessToken:kYelpToken
                                              accessSecret:kYelpTokenSecret];
     
-    [self.client searchWithTerm:@"Thai" success:^(AFHTTPRequestOperation *operation, id response) {
-        self.searchResults = [Result unpackSearchResponse:response[@"businesses"]];
-        [self.resultsTableView reloadData];
-    //    NSLog(@"response: %@", response);
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"error: %@", [error description]);
-    }];
+    [self loadSearch:@"Burma"];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -83,7 +78,8 @@ NSString * const kYelpTokenSecret=@"j_VPwzZoIf-HIGQwaK0fbv5jCNU";
     cell.nameLabel.text = result.name;
     cell.distanceLabel.text = [NSString stringWithFormat:@"%.2f mi", result.distance];
     [cell.ratingsImageView setImageWithURL:[NSURL URLWithString:result.ratingsURL]];
-    cell.reviewCountLabel.text = [NSString stringWithFormat:@"%@ reviews", result.reviewCount];
+    cell.reviewCountLabel.text =
+        [NSString stringWithFormat:@"%@ reviews", result.reviewCount];
     cell.addressLabel.text = result.address;
     cell.categoriesLabel.text = [result.categories componentsJoinedByString:@", "];
     return cell;
@@ -95,6 +91,9 @@ NSString * const kYelpTokenSecret=@"j_VPwzZoIf-HIGQwaK0fbv5jCNU";
 }
 
 - (void) searchBarSearchButtonClicked:(UISearchBar *)searchBar {
+    NSString *searchTerm = searchBar.text;
+    [self loadSearch:searchTerm];
+    NSLog(@"Searching for %@", searchBar.text);
     [self.searchBar resignFirstResponder];
 }
 
@@ -102,8 +101,17 @@ NSString * const kYelpTokenSecret=@"j_VPwzZoIf-HIGQwaK0fbv5jCNU";
     [self.searchBar resignFirstResponder];
 }
 
-- (void) loadSearch {
-    
+- (void) loadSearch:(NSString *)searchTerm {
+    [SVProgressHUD show];
+   [self.client searchWithTerm:searchTerm
+                       success:^(AFHTTPRequestOperation *operation, id response) {
+        NSLog(@"response: %@", response);
+        self.searchResults = [Result unpackSearchResponse:response[@"businesses"]];
+        [self.resultsTableView reloadData];
+                           [SVProgressHUD dismiss];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"error: %@", [error description]);
+    }];
 }
 
 @end

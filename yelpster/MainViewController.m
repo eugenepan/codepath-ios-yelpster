@@ -8,6 +8,7 @@
 
 #import "UIImageView+AFNetworking.h"
 #import "MainViewController.h"
+#import "FilterViewController.h"
 #import "YelpClient.h"
 #import "Result.h"
 #import "ResultCell.h"
@@ -34,8 +35,11 @@ NSString * const kYelpTokenSecret=@"j_VPwzZoIf-HIGQwaK0fbv5jCNU";
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.filterButton = [[UIBarButtonItem alloc] init];
-    [self.filterButton setTitle:@"Filters"];
+    self.filterButton = [[UIBarButtonItem alloc]
+                         initWithTitle:@"Filters"
+                         style:UIBarButtonItemStylePlain
+                         target:self
+                         action:@selector(onFilterButton)];
     
     self.searchBar = [[UISearchBar alloc] init];
     self.searchBar.delegate = self;
@@ -55,6 +59,10 @@ NSString * const kYelpTokenSecret=@"j_VPwzZoIf-HIGQwaK0fbv5jCNU";
                                              accessSecret:kYelpTokenSecret];
     
     [self loadSearch:@"Burma"];
+}
+
+- (void) viewDidAppear:(BOOL)animated {
+    [self.resultsTableView reloadData];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -112,6 +120,15 @@ NSString * const kYelpTokenSecret=@"j_VPwzZoIf-HIGQwaK0fbv5jCNU";
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"error: %@", [error description]);
     }];
+}
+
+- (void) onFilterButton {
+    FilterViewController *fvc = [[FilterViewController alloc]init];
+    fvc.searchViewController = self;
+    UINavigationController *nvc = [[UINavigationController alloc]
+                                   initWithRootViewController:fvc];
+    nvc.navigationBar.barStyle = UIBarStyleBlackTranslucent;
+    [self presentViewController:nvc animated:YES completion:nil];
 }
 
 @end

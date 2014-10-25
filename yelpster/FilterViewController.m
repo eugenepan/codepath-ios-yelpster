@@ -10,28 +10,43 @@
 
 @interface FilterViewController ()
 
+@property (retain, nonatomic) UIBarButtonItem *cancelButton;
+@property (retain, nonatomic) UIBarButtonItem *searchButton;
+
 @end
 
 @implementation FilterViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+    
+    self.cancelButton = [[UIBarButtonItem alloc]
+                         initWithTitle:@"Cancel"
+                         style:UIBarButtonItemStylePlain
+                         target:self
+                         action:@selector(onCancelButton)];
+    
+    self.searchButton = [[UIBarButtonItem alloc]
+                         initWithTitle:@"Search"
+                         style:UIBarButtonItemStylePlain
+                         target:self
+                         action:@selector(onSearchButton)];
+    
+    self.navigationItem.leftBarButtonItem = self.cancelButton;
+    self.navigationItem.rightBarButtonItem = self.searchButton;
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (void) onCancelButton {
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
-*/
+
+- (void) onSearchButton {
+    [self.searchViewController loadSearch:@"Fast Food"];
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
 
 @end

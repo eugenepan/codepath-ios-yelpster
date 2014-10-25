@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MainViewController.h"
 
 @interface FilterViewController : UIViewController
+
+@property (nonatomic, strong) MainViewController *searchViewController;
 
 @end

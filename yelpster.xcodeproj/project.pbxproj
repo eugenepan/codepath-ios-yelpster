@@ -11,6 +11,7 @@
 		87369CC319FA4FCE00BB2C5E /* MainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 87369CC119FA4FCE00BB2C5E /* MainViewController.xib */; };
 		87369CCB19FA6CCF00BB2C5E /* ResultCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 87369CC919FA6CCF00BB2C5E /* ResultCell.m */; };
 		87369CCC19FA6CCF00BB2C5E /* ResultCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 87369CCA19FA6CCF00BB2C5E /* ResultCell.xib */; };
+		87369CCF19FB21E200BB2C5E /* Result.m in Sources */ = {isa = PBXBuildFile; fileRef = 87369CCE19FB21E200BB2C5E /* Result.m */; };
 		87C605C919F69AF4008B6864 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 87C605C819F69AF4008B6864 /* main.m */; };
 		87C605CC19F69AF4008B6864 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 87C605CB19F69AF4008B6864 /* AppDelegate.m */; };
 		87C605D219F69AF4008B6864 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 87C605D019F69AF4008B6864 /* Main.storyboard */; };
@@ -40,6 +41,8 @@
 		87369CC819FA6CCF00BB2C5E /* ResultCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResultCell.h; sourceTree = "<group>"; };
 		87369CC919FA6CCF00BB2C5E /* ResultCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResultCell.m; sourceTree = "<group>"; };
 		87369CCA19FA6CCF00BB2C5E /* ResultCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ResultCell.xib; sourceTree = "<group>"; };
+		87369CCE19FB21E200BB2C5E /* Result.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Result.m; sourceTree = "<group>"; };
+		87369CD019FB21F100BB2C5E /* Result.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Result.h; sourceTree = "<group>"; };
 		87C605C319F69AF4008B6864 /* yelpster.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = yelpster.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		87C605C719F69AF4008B6864 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		87C605C819F69AF4008B6864 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -97,8 +100,23 @@
 			children = (
 				87C605ED19F6E670008B6864 /* YelpClient.m */,
 				87C605EF19F6E68A008B6864 /* YelpClient.h */,
+				87369CCE19FB21E200BB2C5E /* Result.m */,
+				87369CD019FB21F100BB2C5E /* Result.h */,
 			);
 			name = YelpClient;
+			sourceTree = "<group>";
+		};
+		87369CCD19FB01B400BB2C5E /* ResultsController */ = {
+			isa = PBXGroup;
+			children = (
+				87369CC819FA6CCF00BB2C5E /* ResultCell.h */,
+				87369CC919FA6CCF00BB2C5E /* ResultCell.m */,
+				87369CCA19FA6CCF00BB2C5E /* ResultCell.xib */,
+				87369CBF19FA4FCE00BB2C5E /* MainViewController.h */,
+				87369CC019FA4FCE00BB2C5E /* MainViewController.m */,
+				87369CC119FA4FCE00BB2C5E /* MainViewController.xib */,
+			);
+			name = ResultsController;
 			sourceTree = "<group>";
 		};
 		87C605BA19F69AF4008B6864 = {
@@ -127,12 +145,7 @@
 				87369CB919F92E7200BB2C5E /* YelpClient */,
 				87C605CA19F69AF4008B6864 /* AppDelegate.h */,
 				87C605CB19F69AF4008B6864 /* AppDelegate.m */,
-				87369CBF19FA4FCE00BB2C5E /* MainViewController.h */,
-				87369CC019FA4FCE00BB2C5E /* MainViewController.m */,
-				87369CC119FA4FCE00BB2C5E /* MainViewController.xib */,
-				87369CC819FA6CCF00BB2C5E /* ResultCell.h */,
-				87369CC919FA6CCF00BB2C5E /* ResultCell.m */,
-				87369CCA19FA6CCF00BB2C5E /* ResultCell.xib */,
+				87369CCD19FB01B400BB2C5E /* ResultsController */,
 				87C605D019F69AF4008B6864 /* Main.storyboard */,
 				87C605D319F69AF4008B6864 /* Images.xcassets */,
 				87C605D519F69AF4008B6864 /* LaunchScreen.xib */,
@@ -304,6 +317,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				87369CCF19FB21E200BB2C5E /* Result.m in Sources */,
 				87C605EE19F6E670008B6864 /* YelpClient.m in Sources */,
 				87369CCB19FA6CCF00BB2C5E /* ResultCell.m in Sources */,
 				87C605CC19F69AF4008B6864 /* AppDelegate.m in Sources */,

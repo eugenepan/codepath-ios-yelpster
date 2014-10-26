@@ -135,10 +135,16 @@
     NSString *filterToUpdate = filterSection.paramValues[indexPath.row];
     
     if (value) {
+        if ([filterSection.name isEqualToString:@"Sort by"] || [filterSection.name isEqualToString:@"Distance"]) {
+            [self.filters[filterSection.name] removeAllObjects];
+        }
         [self.filters[filterSection.name] addObject:filterToUpdate];
+        [self.filtersTableView reloadData];
     } else {
         [self.filters[filterSection.name] removeObject:filterToUpdate];
     }
+    
+    NSLog(@"%@", filterSection.name);
     NSLog(@"%@", self.filters[filterSection.name]);
 }
 

@@ -63,7 +63,7 @@ NSString * const kYelpTokenSecret=@"j_VPwzZoIf-HIGQwaK0fbv5jCNU";
     [self executeSearch:@{@"term": @"Burma", @"ll" : @"37.788022,-122.399797"}];
 }
 
-- (void) viewDidAppear:(BOOL)animated {
+- (void) viewWillAppear:(BOOL)animated {
     [self.resultsTableView reloadData];
 }
 

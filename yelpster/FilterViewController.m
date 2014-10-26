@@ -107,7 +107,7 @@
     return filterSection.name;
 }
 
-- (float) tableView: (UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+- (CGFloat) tableView: (UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     return 45;
 }
 

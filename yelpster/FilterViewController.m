@@ -10,13 +10,13 @@
 #import "FilterSection.h"
 #import "SwitchCell.h"
 
-@interface FilterViewController ()
+@interface FilterViewController () <UITableViewDataSource, UITableViewDelegate, SwitchCellDelegate>
 
 @property (retain, nonatomic) UIBarButtonItem *cancelButton;
 @property (retain, nonatomic) UIBarButtonItem *searchButton;
 @property (weak, nonatomic) IBOutlet UITableView *filtersTableView;
 @property (strong, nonatomic) NSMutableArray *filterSections;
-@property (nonatomic, readonly) NSDictionary *filters;
+@property (nonatomic, strong) NSDictionary *filters;
 
 @end
 
@@ -48,34 +48,32 @@
     
     FilterSection *categoryFilterSection = [[FilterSection alloc] init];
     categoryFilterSection.name = @"Category";
-    categoryFilterSection.optionToParamValueDict = @{
-                                                     @"Burmese" : @"Burmese",
-                                                     @"Fast Food" : @"Fast Food",
-                                                     @"Taiwanes" : @"Taiwanes",
-                                                     };
+    categoryFilterSection.options = @[@"Burmese", @"Fast Food", @"Taiwanese"];
+    categoryFilterSection.paramValues = @[@"Burmese", @"Fast Food", @"Taiwanese"];
     
     FilterSection *sortFilterSection = [[FilterSection alloc] init];
     sortFilterSection.name = @"Sort by";
-    sortFilterSection.optionToParamValueDict = @{
-                                                 @"Best Match" : [NSNumber numberWithInt:0],
-                                                 @"Distance" : [NSNumber numberWithInt: 1],
-                                                 @"Rating" : [NSNumber numberWithInt:2],
-                                                 };
+    sortFilterSection.options = @[@"Best Match", @"Distance", @"Rating"];
+    sortFilterSection.paramValues = @[@"0", @"1", @"2"];
     
     FilterSection *distanceFilterSection = [[FilterSection alloc] init];
     distanceFilterSection.name = @"Distance";
-    distanceFilterSection.optionToParamValueDict = @{
-                                                     @"1 mi" : [NSNumber numberWithInt:1600],
-                                                     @"5 mi" : [NSNumber numberWithInt:80000],
-                                                     @"10 mi" : [NSNumber numberWithInt:16000],
-                                                     };
-    
+    distanceFilterSection.options = @[@"1 mi", @"5 mi", @"10 mi"];
+    distanceFilterSection.paramValues = @[@"1600", @"8000", @"16000"];
     
     FilterSection *dealsFilterSection = [[FilterSection alloc] init];
     dealsFilterSection.name = @"Most Popular";
-    dealsFilterSection.optionToParamValueDict = @{@"Offering a Deal" : @NO};
+    dealsFilterSection.options = @[@"Offering a Deal"];
+    dealsFilterSection.paramValues = @[@"no"];
     
     self.filterSections = [NSMutableArray arrayWithObjects:categoryFilterSection, sortFilterSection, distanceFilterSection, dealsFilterSection, nil];
+    
+    self.filters = @{
+                     categoryFilterSection.name : [[NSMutableArray alloc]init],
+                     sortFilterSection.name : [[NSMutableArray alloc]init],
+                     distanceFilterSection.name : [[NSMutableArray alloc]init],
+                     dealsFilterSection.name : [[NSMutableArray alloc]init],
+                     };
 }
 
 - (void)didReceiveMemoryWarning {
@@ -93,7 +91,7 @@
 
 - (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     FilterSection *filterSection = self.filterSections[section];
-    return filterSection.optionToParamValueDict.count;
+    return filterSection.options.count;
 }
 
 - (NSInteger) numberOfSectionsInTableView:(UITableView *) tableView {
@@ -106,14 +104,17 @@
 }
 
 - (float) tableView: (UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return 40;
+    return 45;
 }
 
 - (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     FilterSection *filterSection = self.filterSections[indexPath.section];
     
     SwitchCell *tableViewCell = [tableView dequeueReusableCellWithIdentifier:@"SwitchCell"];
-    tableViewCell.titleLabel.text = [filterSection.optionToParamValueDict allKeys][indexPath.row];
+    tableViewCell.titleLabel.text = filterSection.options[indexPath.row];
+    NSLog(@"%@", filterSection.paramValues[indexPath.row]);
+    tableViewCell.toggleSwitch.on = [self.filters[filterSection.name] containsObject:filterSection.paramValues[indexPath.row]];
+    tableViewCell.delegate = self;
     
     return tableViewCell;
 }
@@ -125,6 +126,20 @@
 - (NSString *) fetchCurrentSearchTerm {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     return [defaults objectForKey:@"searchTerm"];
+}
+
+- (void)switchCell:(SwitchCell *)cell didUpdateValue:(BOOL)value {
+    NSIndexPath *indexPath = [self.filtersTableView indexPathForCell:cell];
+    FilterSection *filterSection = self.filterSections[indexPath.section];
+    
+    NSString *filterToUpdate = filterSection.paramValues[indexPath.row];
+    
+    if (value) {
+        [self.filters[filterSection.name] addObject:filterToUpdate];
+    } else {
+        [self.filters[filterSection.name] removeObject:filterToUpdate];
+    }
+    NSLog(@"%@", self.filters[filterSection.name]);
 }
 
 @end

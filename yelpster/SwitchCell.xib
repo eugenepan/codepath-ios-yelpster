@@ -20,7 +20,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="AqD-XU-Inv">
-                        <rect key="frame" x="263" y="6" width="51" height="31"/>
+                        <rect key="frame" x="259" y="6" width="51" height="31"/>
                         <connections>
                             <action selector="switchValueChanged:" destination="KGk-i7-Jjw" eventType="valueChanged" id="g9i-nD-xvV"/>
                         </connections>
@@ -31,7 +31,7 @@
                     <constraint firstItem="Gvd-4y-40J" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="11" id="HPs-yj-XEO"/>
                     <constraint firstItem="Gvd-4y-40J" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="20" id="JWj-qt-Xpr"/>
                     <constraint firstItem="AqD-XU-Inv" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="6" id="KyV-3S-h8U"/>
-                    <constraint firstAttribute="trailing" secondItem="AqD-XU-Inv" secondAttribute="trailing" constant="8" id="OH2-jp-uWr"/>
+                    <constraint firstAttribute="trailing" secondItem="AqD-XU-Inv" secondAttribute="trailing" constant="12" id="OH2-jp-uWr"/>
                     <constraint firstAttribute="centerY" secondItem="Gvd-4y-40J" secondAttribute="centerY" id="UxQ-jX-H8e"/>
                     <constraint firstAttribute="centerY" secondItem="AqD-XU-Inv" secondAttribute="centerY" id="WoI-w3-1SR"/>
                     <constraint firstAttribute="bottom" secondItem="Gvd-4y-40J" secondAttribute="bottom" constant="11" id="z09-4N-OPs"/>

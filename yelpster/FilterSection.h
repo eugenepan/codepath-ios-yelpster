@@ -11,6 +11,7 @@
 @interface FilterSection : NSObject
 
 @property (nonatomic, strong) NSString *name;
-@property (nonatomic, strong) NSDictionary *optionToParamValueDict;
+@property (nonatomic, strong) NSArray *options;
+@property (nonatomic, strong) NSArray *paramValues;
 
 @end

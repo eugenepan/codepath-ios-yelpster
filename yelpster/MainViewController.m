@@ -60,7 +60,7 @@ NSString * const kYelpTokenSecret=@"j_VPwzZoIf-HIGQwaK0fbv5jCNU";
                                              accessSecret:kYelpTokenSecret];
     
     [self saveCurrentSearchTerm:@"Burma"];
-    [self loadSearch:@"Burma"];
+    [self executeSearch:@{@"term": @"Burma", @"ll" : @"37.788022,-122.399797"}];
 }
 
 - (void) viewDidAppear:(BOOL)animated {
@@ -102,7 +102,7 @@ NSString * const kYelpTokenSecret=@"j_VPwzZoIf-HIGQwaK0fbv5jCNU";
 
 - (void) searchBarSearchButtonClicked:(UISearchBar *)searchBar {
     [self saveCurrentSearchTerm:searchBar.text];
-    [self loadSearch:searchBar.text];
+    [self executeSearch:@{@"term": searchBar.text, @"ll" : @"37.788022,-122.399797"}];
     [self.searchBar resignFirstResponder];
 }
 
@@ -110,9 +110,9 @@ NSString * const kYelpTokenSecret=@"j_VPwzZoIf-HIGQwaK0fbv5jCNU";
     [self.searchBar resignFirstResponder];
 }
 
-- (void) loadSearch:(NSString *)searchTerm {
+- (void) executeSearch:(NSDictionary *)searchParams {
     [SVProgressHUD show];
-    [self.client searchWithTerm:searchTerm
+    [self.client searchWithParameters:searchParams
                         success:^(AFHTTPRequestOperation *operation, id response) {
      //   NSLog(@"response: %@", response);
         self.searchResults = [Result unpackSearchResponse:response[@"businesses"]];
@@ -146,7 +146,19 @@ NSString * const kYelpTokenSecret=@"j_VPwzZoIf-HIGQwaK0fbv5jCNU";
 #pragma mark - Filter delegate methods
 
 - (void)filterViewController:(FilterViewController *)filterViewController didChangeFilters:(NSDictionary *)filters {
-    
+   // searchParams[@"category_filter"] = [filters[@"category_filter"] componentsJoinedByString:@", "];
+   // searchParams[@"sort"] = [filters[@"sort"] count] == 0 ? @"0" : [filters[@"sort"] objectAtIndex:0];
+   // searchParams[@"radius_filter"] = [filters[@"radius_filter"] count] == 0 ? @"0" : [filters[@"radius_filter"] objectAtIndex:0];
+   // searchParams[@"deals_filter"] = [filters[@"deals_filter"] count] == 0 ? @"false" : [filters[@"deals_filter"] objectAtIndex:0];
+    NSDictionary *searchParams = @{
+                                   @"term" : [self fetchCurrentSearchTerm],
+                                   @"ll" : @"37.788022,-122.399797",
+                                   @"category_filter" : [filters[@"category_filter"] componentsJoinedByString:@", "],
+                                   @"sort" : [filters[@"sort"] count] == 0 ? @"0" : [filters[@"sort"] objectAtIndex:0],
+                                   @"radius_filter" : [filters[@"radius_filter"] count] == 0 ? @"0" : [filters[@"radius_filter"] objectAtIndex:0],
+                                   @"deals_filter" : [filters[@"deals_filter"] count] == 0 ? @"false" : [filters[@"deals_filter"] objectAtIndex:0],
+                                   };
+    [self executeSearch:searchParams];
 }
 
 @end

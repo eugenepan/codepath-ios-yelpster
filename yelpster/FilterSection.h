@@ -12,6 +12,7 @@
 
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) NSArray *options;
+@property (nonatomic, strong) NSString *paramName;
 @property (nonatomic, strong) NSArray *paramValues;
 
 @end

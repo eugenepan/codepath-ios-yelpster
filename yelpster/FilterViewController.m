@@ -49,30 +49,34 @@
     FilterSection *categoryFilterSection = [[FilterSection alloc] init];
     categoryFilterSection.name = @"Category";
     categoryFilterSection.options = @[@"Burmese", @"Fast Food", @"Taiwanese"];
-    categoryFilterSection.paramValues = @[@"Burmese", @"Fast Food", @"Taiwanese"];
+    categoryFilterSection.paramName= @"category_filter";
+    categoryFilterSection.paramValues = @[@"burmese", @"hotdogs", @"taiwanese"];
     
     FilterSection *sortFilterSection = [[FilterSection alloc] init];
     sortFilterSection.name = @"Sort by";
     sortFilterSection.options = @[@"Best Match", @"Distance", @"Rating"];
+    sortFilterSection.paramName= @"sort";
     sortFilterSection.paramValues = @[@"0", @"1", @"2"];
     
     FilterSection *distanceFilterSection = [[FilterSection alloc] init];
     distanceFilterSection.name = @"Distance";
     distanceFilterSection.options = @[@"1 mi", @"5 mi", @"10 mi"];
+    distanceFilterSection.paramName= @"radius_filter";
     distanceFilterSection.paramValues = @[@"1600", @"8000", @"16000"];
     
     FilterSection *dealsFilterSection = [[FilterSection alloc] init];
     dealsFilterSection.name = @"Most Popular";
     dealsFilterSection.options = @[@"Offering a Deal"];
-    dealsFilterSection.paramValues = @[@"no"];
+    dealsFilterSection.paramName= @"deals_filter";
+    dealsFilterSection.paramValues = @[@"true"];
     
     self.filterSections = [NSMutableArray arrayWithObjects:categoryFilterSection, sortFilterSection, distanceFilterSection, dealsFilterSection, nil];
     
     self.filters = @{
-                     categoryFilterSection.name : [[NSMutableArray alloc]init],
-                     sortFilterSection.name : [[NSMutableArray alloc]init],
-                     distanceFilterSection.name : [[NSMutableArray alloc]init],
-                     dealsFilterSection.name : [[NSMutableArray alloc]init],
+                     categoryFilterSection.paramName: [[NSMutableArray alloc]init],
+                     sortFilterSection.paramName: [[NSMutableArray alloc]init],
+                     distanceFilterSection.paramName: [[NSMutableArray alloc]init],
+                     dealsFilterSection.paramName: [[NSMutableArray alloc]init],
                      };
 }
 
@@ -113,7 +117,7 @@
     SwitchCell *tableViewCell = [tableView dequeueReusableCellWithIdentifier:@"SwitchCell"];
     tableViewCell.titleLabel.text = filterSection.options[indexPath.row];
     NSLog(@"%@", filterSection.paramValues[indexPath.row]);
-    tableViewCell.toggleSwitch.on = [self.filters[filterSection.name] containsObject:filterSection.paramValues[indexPath.row]];
+    tableViewCell.toggleSwitch.on = [self.filters[filterSection.paramName] containsObject:filterSection.paramValues[indexPath.row]];
     tableViewCell.delegate = self;
     
     return tableViewCell;
@@ -128,7 +132,7 @@
     return [defaults objectForKey:@"searchTerm"];
 }
 
-- (void)switchCell:(SwitchCell *)cell didUpdateValue:(BOOL)value {
+- (void) switchCell:(SwitchCell *)cell didUpdateValue:(BOOL)value {
     NSIndexPath *indexPath = [self.filtersTableView indexPathForCell:cell];
     FilterSection *filterSection = self.filterSections[indexPath.section];
     
@@ -136,16 +140,16 @@
     
     if (value) {
         if ([filterSection.name isEqualToString:@"Sort by"] || [filterSection.name isEqualToString:@"Distance"]) {
-            [self.filters[filterSection.name] removeAllObjects];
+            [self.filters[filterSection.paramName] removeAllObjects];
         }
-        [self.filters[filterSection.name] addObject:filterToUpdate];
+        [self.filters[filterSection.paramName] addObject:filterToUpdate];
         [self.filtersTableView reloadData];
     } else {
-        [self.filters[filterSection.name] removeObject:filterToUpdate];
+        [self.filters[filterSection.paramName] removeObject:filterToUpdate];
     }
     
-    NSLog(@"%@", filterSection.name);
-    NSLog(@"%@", self.filters[filterSection.name]);
+    NSLog(@"%@", filterSection.paramName);
+    NSLog(@"%@", self.filters[filterSection.paramName]);
 }
 
 @end

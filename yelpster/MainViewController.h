@@ -11,6 +11,6 @@
 @interface MainViewController : UIViewController
 <UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate>
 
-- (void) loadSearch:(NSString *)searchTerm;
+- (void) executeSearch:(NSDictionary *)searchParams;
 
 @end

@@ -9,14 +9,16 @@
 #import <UIKit/UIKit.h>
 #import "MainViewController.h"
 
+@class FilterViewController;
+
 @protocol FilterViewControllerDelegate <NSObject>
 
-- (void)loadSearch:(NSString *) searchTerm;
+- (void)filterViewController:(FilterViewController *) filterViewController didChangeFilters:(NSDictionary *) filters;
 
 @end
 
-@interface FilterViewController : UIViewController
+@interface FilterViewController : UIViewController<UITableViewDataSource, UITableViewDelegate>
 
-@property (nonatomic, strong) id<FilterViewControllerDelegate> delegate;
+@property (nonatomic, weak) id<FilterViewControllerDelegate> delegate;
 
 @end

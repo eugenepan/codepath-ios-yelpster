@@ -22,7 +22,7 @@ NSString * const kYelpTokenSecret=@"j_VPwzZoIf-HIGQwaK0fbv5jCNU";
 @interface MainViewController ()<FilterViewControllerDelegate>
 
 @property (nonatomic, strong) YelpClient *client;
-@property (nonatomic, strong) NSArray *searchResults;
+@property (nonatomic, retain) NSArray *searchResults;
 @property (nonatomic, weak) NSString *currSearchTerm;
 
 @property (retain, nonatomic) UIBarButtonItem *filterButton;
@@ -141,6 +141,12 @@ NSString * const kYelpTokenSecret=@"j_VPwzZoIf-HIGQwaK0fbv5jCNU";
 - (NSString *) fetchCurrentSearchTerm {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     return [defaults objectForKey:@"searchTerm"];
+}
+
+#pragma mark - Filter delegate methods
+
+- (void)filterViewController:(FilterViewController *)filterViewController didChangeFilters:(NSDictionary *)filters {
+    
 }
 
 @end

@@ -50,6 +50,7 @@ NSString * const kYelpTokenSecret=@"j_VPwzZoIf-HIGQwaK0fbv5jCNU";
     self.resultsTableView.delegate = self;
     [self.resultsTableView registerNib:[UINib nibWithNibName:@"ResultCell" bundle:nil]
                 forCellReuseIdentifier:@"ResultCell"];
+    self.resultsTableView.rowHeight = UITableViewAutomaticDimension;
     
     self.navigationItem.leftBarButtonItem = self.filterButton;
     self.navigationItem.titleView = self.searchBar;
